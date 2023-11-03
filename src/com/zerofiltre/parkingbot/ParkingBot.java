@@ -6,6 +6,8 @@ import com.zerofiltre.parkingbot.model.Ticket;
 import com.zerofiltre.parkingbot.model.Vehicle;
 import com.zerofiltre.parkingbot.service.ParkingService;
 
+import java.util.*;
+
 public class ParkingBot {
 
   static ParkingService parkingService = new ParkingService();
@@ -35,6 +37,47 @@ public class ParkingBot {
     bicycle.setRegistrationNumber("BX-256-QX");
     Ticket carTicket = parkingService.processIncomingVehicle(car);
     System.out.println(carTicket);
+
+    System.out.println("Traitement des sorties par lot");
+
+
+   /* Ticket[] tickets = new Ticket[3];
+    tickets[0] = vehicleTicket;
+    tickets[1] = bicycleTicket;
+    tickets[2] = carTicket;
+
+    for (int i = 0; i < tickets.length; i++) {
+      System.out.println(parkingService.processExitingVehicle(tickets[i]));
+    }*/
+
+    List<Ticket> tickets = new ArrayList<>();
+    tickets.add(vehicleTicket);
+    tickets.add(bicycleTicket);
+    tickets.add(carTicket);
+
+/*    Set<Ticket> tickets = new HashSet<>();
+    tickets.add(vehicleTicket);
+    tickets.add(carTicket);
+    tickets.add(bicycleTicket);
+
+    for (Ticket ticket: tickets) {
+      System.out.println(parkingService.processExitingVehicle(ticket));
+    }*/
+
+    Map<Integer, Ticket> ticketMap = new HashMap<>();
+
+    int position = 0;
+
+    for (Ticket ticket: tickets){
+      ticketMap.put(position,parkingService.processExitingVehicle(ticket));
+      System.out.println(ticketMap.get(position));
+      position++;
+
+    }
+
+    Set<Integer> keySet = ticketMap.keySet();
+    System.out.println(keySet);
+    System.out.println(ticketMap);
 
   }
 
